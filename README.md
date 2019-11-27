@@ -4,6 +4,13 @@ Ta dokument opisuje kako uporabljati skripto za generiranje
 vprašanj za ustvarjanje kvizov na spletni učilnici Moodle
 za preverjanje znanja pri numeričnih predmetih na FMF.
 
+Kvizi so sestavljeni iz več nalog (običajno 4), vsaka naloga ima lahko eno ali
+več (običajno dve) vprašanj. V vsaki nalogi nastopa parameter in vsak študent
+dobi naloge z drugimi vrednostmi parametra. To pomeni, da je npr. za 40
+študentov in kviz s 4 nalogami potrebno zgenerirati 4 zbirke vprašanj, v vsaki
+zbirki je 40 nalog istega tipa z različnimi vrednostmi parametrov. Vsak študent
+potem na kvizu dobi po eno naključno nalogo iz vsake zbirke.
+
 ## Uporaba razreda za generiranje XML nalog
 
 Za uporabo kode za generiranje kvizov potrebujete Matlab (gotovo deluje na verziji 2017a,
@@ -98,8 +105,29 @@ Parametri razreda `GeneratorNalog` so:
 * `relativna_toleranca`: odgovor študenta bo veljal za pravilnega, če je njegova relativna napaka
   pod to toleranco
 * `ime_datoteke`: ime zgenerirane datoteke (priporočljiva je končnica `.xml`.
-* `generator_parametrov`: TODO
-* `koda_za_parametre`: TODO
+* `generator_parametrov`: function handle, ki ne sprejme argumentov in ob vsakem
+  klicu vrne eno naključno število
+  Primeri: `@rand` za parametre enakomerno med 0 in 1, `@() randi([0 200], 1)`
+za celoštevilske parametre med 0 in 200, `@() 2 + 3*rand()` za parametre med 2
+in 5. S tem parametrov kontrolirate porazdelitev parametrov in ne njihovega
+števila.
+
+* `koda_za_parametre`: niz znakov z začetno kodo, ki jo izvede študent, kjer
+  mora biti vsaj en naključen paramter
+
+  Niz mora vsebovati polja oblike `%x`, ki se prek `sprintf` zamenjajo za
+  zaporednimi rezultati funkcije `generator_parametrov`. Prek polj lahko
+  specificiramo tudi število izpisanih decimalk, npr. `%.2f`. Nič ni narobe, če za
+  lažjo berljivost izpišemo manj decimalk, saj bo tudi naša rešitev videla število
+  zgolj kot `1.34`, saj `eval`-a točno ta niz s parametri.
+
+  Primeri:
+  - `a = %.16f;`: en parameter na 16 decimalk
+  - `x = [%g, %g, %g];` vektor treh števil, izpisanih v "najlepši obliki"
+  - `B = [%.2f, %.2f; %.2f, %.2f];` naključna 2x2 matrika
+  - `c = %f; d = %f; e = c+2; M = e*ones(3, 3);` dva naključna parametra in dve predefinirani
+    spremenljivki
+
 * `uvod`: besedilo z uvodom za vsa vprašanja
 * `vprasanja`: cell array dolžine kolikor je vprašanj z opisom pozameznega vprašanja
 * `resitev_naloge`: function handle na rešitev naloge, ki kot parameter sprejme en niz z začetnimi
