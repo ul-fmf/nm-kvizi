@@ -80,9 +80,11 @@ izberete "Naprej", jih označite in spodaj kliknete "Izbriši".
 nato na izbrisati še kategorijo. Kategorijo lahko izbrišete preko menija "Zbirka vprašanj / Kategorije" s
 klikom na `x` zraven kategorije.
 
-Če so nastavitve kviza napačne, jih lahko uredite pred kvizom. Med kvizom večino nastavitev ni možno urejati, če pa
-se ureja nastavitve (npr. časovna omejitev, geslo) morajo študenti osvežiti stran ali pa zapustiti in se
-vrniti v kviz, da registrira spremembo.
+Če so nastavitve kviza napačne, jih lahko uredite pred kvizom.  Ko kviz že ima vnešena vprašanja,
+gumb "Uredi kviz" na kvizu izigne, vendar je še vedno na voljo spodaj levo, na podobni lokaciji kot
+uvoz vprašanj.  Med kvizom večino nastavitev ni možno urejati, če pa se ureja nastavitve (npr.
+časovna omejitev, geslo) morajo študenti osvežiti stran ali pa zapustiti in se vrniti v kviz, da
+registrira spremembo.
 
 ## Zgodovina
 
@@ -132,5 +134,7 @@ in 5. S tem parametrov kontrolirate porazdelitev parametrov in ne njihovega
 * `vprasanja`: cell array dolžine kolikor je vprašanj z opisom pozameznega vprašanja
 * `resitev_naloge`: function handle na rešitev naloge, ki kot parameter sprejme en niz z začetnimi
   parametri, od kjer s pomočjo `eval` lahko dobi enake začetne podatke, kot jih bo videl študent.
+
+Po klicu metode `generiraj()` lahko v spremenljivki `gen.rezultati` pogledate izračunane rezultate.
 
 
